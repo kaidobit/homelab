@@ -12,8 +12,8 @@ services:
     ports:
       - 9000:9000
     volumes:
-      - $HOST_CONFIG_DIR_PATH:/root/.minio
-      - $HOST_DATA_DIR_PATH:/data
+      - $MINIO_HOST_CONFIG_DIR_PATH:/root/.minio
+      - $MINIO_HOST_DATA_DIR_PATH:/data
     networks:
       - minio
   minio-console:
