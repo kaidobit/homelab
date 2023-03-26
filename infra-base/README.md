@@ -1,8 +1,20 @@
 # infra-base
 
-Deploys S3-Bucket in minio, used for remote-state management.
-Terraform Stack contains a sops-encrypted file, use `just decrypt`, after pulling and `just encrypt` before commiting.
+Deploys S3-bucket in minio, used for remote-state management.
+Terraform stack contains a sops-encrypted file, use `just decrypt`, after pulling and `just encrypt` before committing.
 
-## Init
+## Requirements
 
-`terraform init -backend-config="access_key=$TF_VAR_minio_access_key" -backend-config="secret_key=$TF_VAR_minio_secret_key" -backend-config="bucket=$TERRAFORM_BASE_INFRA_STATE_BUCKET" -backend-config="endpoint=$MINIO_ENDPOINT"`
+* deployed [minio](../minio/README.md)
+* terraform user with service-account in minio
+* terraform-state-bucket in minio
+
+## Deployment
+
+1. configure the variables in `.env`:
+   * infra-base
+   * minio terraform provider
+2. create a `secrets.tf`
+3. initialize using:
+`terraform init -backend-config="access_key=$TF_VAR_minio_access_key" -backend-config="secret_key=$TF_VAR_minio_secret_key" -backend-config="bucket=$INFRA_BASE_TERRAFORM_STATE_BUCKET" -backend-config="endpoint=$TF_VAR_minio_hostname"`
+4. `terraform apply`
