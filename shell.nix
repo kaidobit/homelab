@@ -10,5 +10,7 @@ in
             pkgs.just
             pkgs.terraform
             pkgs.minio-client
+            pkgs.sops
+            pkgs.age
         ];
     }
