@@ -1,0 +1,5 @@
+# dev
+.env
+data/*
+!data/config/.gitkeep
+!data/minio_data/.gitkeep
