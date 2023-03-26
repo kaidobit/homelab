@@ -1,6 +1,7 @@
 # infra-base
 
 Deploys S3-Bucket in minio, used for remote-state management.
+Terraform Stack contains a sops-encrypted file, use `just decrypt`, after pulling and `just encrypt` before commiting.
 
 ## Init
 
