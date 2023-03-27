@@ -1,5 +1,4 @@
-resource "minio_s3_bucket" "state_terraform_s3" {
-  bucket = "homelab-state"
-  acl    = "public"
-  force_destroy = false
+resource "minio_bucket" "state_management_bucket" {
+  name = var.state_bucket_name
+  versioning_enabled = true
 }
