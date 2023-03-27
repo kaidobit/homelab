@@ -1,6 +1,5 @@
 terraform {
   backend "s3" {
-    endpoint = "http://192.168.10.3:9000"
     key = "homelab-base/terraform.tfstate"
     force_path_style = true
     region = "main"
@@ -13,8 +12,8 @@ terraform {
 
   required_providers {
     minio = {
-      version = "0.1.0"
-      source  = "refaktory/minio"
+      source = "aminueza/minio"
+      version = "1.13.0"
     }
   }
 }

@@ -1,0 +1,13 @@
+# sops encrypt secrets.tf
+encrypt:
+    sops --encrypt \
+    --age $(cat $SOPS_AGE_KEY_FILE | \
+      grep -oP "public key: \K(.*)") \
+    --in-place ./secrets.tf
+
+# sops decrypt secrets.tf
+decrypt:
+    sops --decrypt \
+    --age $(cat $SOPS_AGE_KEY_FILE | \
+      grep -oP "public key: \K(.*)") \
+    --in-place ./secrets.tf
