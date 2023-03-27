@@ -1,14 +1,9 @@
-# Minio in my Homelab
+# minio
 
-Minio in my Homelab is deployed on my Synology NAS as a Dockercontainer. 
+Minio is deployed on a Synology NAS as a Dockercontainer.
 
-## Getting Started
+## Deployment
 
-1. copy `.env.dist` to `.env`
-2. configure the `.env`
-3. start with `docker-compose up -d`
-
-
-## Terraform State Managment
-Due to the chicken-egg-problem I have to setup an initial user with service-account for Terraform, since form here on were continuing with that.
-This can be accomplished either using either the UI or minio-client
+1. configure `minio`-annotated variables in `.env`
+2. (upload `.env` and `docker-compose.yml` to target-host)
+3. `docker-compose up` (on target-host)
