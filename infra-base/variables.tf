@@ -9,3 +9,7 @@ variable "minio_secret_key" {
 variable "minio_endpoint" {
   type    = string
 }
+
+variable "minio_use_ssl" {
+  type    = bool
+}

@@ -1,5 +1,6 @@
 terraform {
   backend "s3" {
+    bucket = "terraform-base"
     key = "homelab-base/terraform.tfstate"
     force_path_style = true
     region = "main"

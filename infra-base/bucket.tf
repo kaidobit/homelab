@@ -1,5 +1,6 @@
+
 resource "minio_s3_bucket" "state_management_bucket" {
-  bucket = var.state_bucket_name
+  bucket = "homelab-state"
   acl    = "public"
 }
 
