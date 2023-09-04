@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  vault:
+    image: hashicorp/vault:1.14.2
+    container_name: vault
+    hostname: vault
+    security_opt:
+      - no-new-privileges:true
+    cap_add:
+      - IPC_LOCK
+    entrypoint: vault server -config=/vault/config/config.hcl
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:8200
+    ports:
+      - "8200:8200"
+    volumes:
+      - $VAULT_HOST_LOGS_DIR_PATH:/vault/logs:rw
+      - $VAULT_HOST_DATA_DIR_PATH:/vault/data:rw
+      - $VAULT_HOST_FILE_DIR_PATH:/vault/file:rw
+      - $VAULT_HOST_CONFIG_DIR_PATH:/vault/config:rw
+      - $VAULT_HOST_PLUGINS_DIR_PATH:/vault/plugins:rw
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      VAULT_ADDR: 0.0.0.0:8200
+    restart: unless-stopped
+    networks:
+      - vault
+
+networks:
+  vault:

@@ -1,0 +1,4 @@
+# dev
+data/**
+!data/**/.gitkeep
+!./data/config/config.hcl
