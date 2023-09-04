@@ -1,4 +1,3 @@
 # dev
-./data/**
-!./data/config/.gitkeep
-!./data/data/.gitkeep
+data/**
+!data/**/.gitkeep
