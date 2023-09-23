@@ -8,9 +8,17 @@ in
         buildInputs = [
             # Tooling
             pkgs.just
+            pkgs.ansible
+            pkgs.vault
             pkgs.terraform
             pkgs.minio-client
             pkgs.sops
             pkgs.age
         ];
+
+        shellHook =
+          ''
+            #bug with ansible build https://github.com/NixOS/nixpkgs/issues/223151
+            export LC_ALL=C.UTF-8
+          '';
     }
