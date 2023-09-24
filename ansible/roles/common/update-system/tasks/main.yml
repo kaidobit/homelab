@@ -1,0 +1,6 @@
+---
+- name: Update System
+  tags: always
+  ansible.builtin.package:
+    update_cache: yes
+    upgrade: yes
