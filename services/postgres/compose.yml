@@ -10,5 +10,11 @@ services:
     ports:
       - '5433:5432'
     image: ankane/pgvector:v0.5.0
+    networks:
+      - postgres
+
+networks:
+  postgres:
+
 volumes:
-  postgres-data:
+  postgres:
