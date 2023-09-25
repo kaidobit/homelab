@@ -1,0 +1,110 @@
+---
+- name: Copy k3s service file on main-master
+  register: k3s_service
+  when: '"main_master" in group_names'
+  template:
+    src: "k3s.service.j2"
+    dest: "{{ systemd_dir }}/k3s.service"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Enable and check k3s service on main-master
+  when: '"main_master" in group_names'
+  systemd:
+    name: k3s
+    daemon_reload: yes
+    state: restarted
+    enabled: yes
+  no_log: True
+
+- name: Wait for node-token on main-master
+  when: '"main_master" in group_names'
+  wait_for:
+    path: "{{ k3s_server_location }}/server/node-token"
+
+- name: Change file access of node-token-file on main-master
+  when: '"main_master" in group_names'
+  file:
+    path: "{{ k3s_server_location }}/server/node-token"
+    mode: "g+rx,o+rx"
+
+- name: Change file access of master-token-file on main-master
+  when: '"main_master" in group_names'
+  file:
+    path: "{{ k3s_server_location }}/server/token"
+    mode: "g+rx,o+rx"
+
+- name: Get node-token on main-master
+  when: '"main_master" in group_names'
+  command: "cat {{ k3s_server_location }}/server/node-token"
+  register: node_token
+  no_log: True
+
+- name: Write node-token to HCP vault from main-master
+  when: '"main_master" in group_names'
+  community.hashi_vault.vault_write:
+    url: "{{ vault_hostname }}"
+    path: "k8s-cluster-tokens/{{ cluster_name }}"
+    data:
+      token: "{{ node_token.stdout }}"
+    auth_method: token
+    token: "{{ vault_auth_token }}"
+  no_log: True
+
+- name: Read node-token from HCP vault on other-master
+  register: vault_master_token
+  when: '"other_master" in group_names'
+  community.hashi_vault.vault_kv1_get:
+    url: "{{ vault_hostname }}"
+    engine_mount_point: "k8s-cluster-tokens"
+    path: "{{ cluster_name }}"
+    token: "{{ vault_auth_token }}"
+  no_log: True
+
+- name: Copy k3s service file on other-masters
+  register: k3s_service
+  when: '"other_master" in group_names'
+  template:
+    src: "k3s.service.j2"
+    dest: "{{ systemd_dir }}/k3s.service"
+    owner: root
+    group: root
+    mode: 0644
+  vars:
+    token_arg: "{{ '--token=' + vault_master_token.secret.token }}"
+
+- name: Enable and check k3s service on other-masters
+  when: '"other_master" in group_names'
+  systemd:
+    name: k3s
+    daemon_reload: yes
+    state: restarted
+    enabled: yes
+
+- name: Create .kube directory
+  file:
+    path: "/home/{{ ansible_env.SUDO_USER + '/.kube'}}"
+    state: directory
+    owner: "{{ ansible_env.SUDO_USER }}"
+    mode: "u=rwx,g=rx,o="
+
+- name: Copy kubeconfig file to user's .kube-directory
+  copy:
+    src: /etc/rancher/k3s/k3s.yaml
+    dest: "/home/{{ ansible_env.SUDO_USER + '/.kube/config'}}"
+    remote_src: yes
+    owner: "{{ ansible_env.SUDO_USER }}"
+    mode: "u=rw,g=,o="
+
+- name: Create kubectl symlink
+  file:
+    src: /usr/local/bin/k3s
+    dest: /usr/local/bin/kubectl
+    state: link
+
+- name: Create crictl symlink
+  file:
+    src: /usr/local/bin/k3s
+    dest: /usr/local/bin/crictl
+    state: link
