@@ -1,0 +1,27 @@
+---
+- name: Read node-token from HCP vault
+  register: node_token
+  community.hashi_vault.vault_kv1_get:
+    url: "{{ vault_hostname }}"
+    engine_mount_point: "k8s"
+    path: "cluster-token"
+    token: "{{ vault_auth_token }}"
+  no_log: True
+
+- name: Copy k3s service file
+  register: k3s_service
+  template:
+    src: "k3s.service.j2"
+    dest: "{{ systemd_dir }}/k3s.service"
+    owner: root
+    group: root
+    mode: 0644
+  vars:
+    token_arg: "{{ '--token=' + vault_master_token.secret.token }}"
+
+- name: Enable and check k3s service
+  systemd:
+    name: k3s
+    daemon_reload: yes
+    state: restarted
+    enabled: yes
