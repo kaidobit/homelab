@@ -1,0 +1,30 @@
+---
+- hosts: k3s_cluster
+  gather_facts: yes
+  become: yes
+  roles:
+    - role: common/update-system
+    - role: common/ansible-requirements
+
+- hosts: main_master
+  become: yes
+  roles:
+    - role: k3s/download
+    - role: k3s/main-master
+
+- hosts: other_master
+  become: yes
+  roles:
+    - role: k3s/download
+    - role: k3s/other-master
+
+- hosts: master
+  become: yes
+  roles:
+    - role: k3s/kubectl
+
+- hosts: worker
+  become: yes
+  roles:
+    - role: k3s/download
+    - role: k3s/worker
