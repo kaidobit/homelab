@@ -1,0 +1,7 @@
+creation_rules:
+
+  - path_regex: ansible/inventory/hosts.ini
+    hc_vault_uris: "$VAULT_ADDR/v1/sops/keys/homelab"
+
+  - path_regex: ansible/inventory/group_vars/*
+    hc_vault_uris: "$VAULT_ADDR/v1/sops/keys/homelab"

@@ -1,0 +1,19 @@
+k3s_version: ENC[AES256_GCM,data:QCOeIdv2jO6h8GsF,iv:QKGrXSD+Zshn0HYsD2IsHrB/d5zo04vyihylIwmvfgs=,tag:bOAoprcIeUgcBt1W00W88A==,type:str]
+systemd_dir: ENC[AES256_GCM,data:hIDzNh1Y3uXEqrRASnLarkbLbg==,iv:wfvpH/shdjTxn5dUoFPv4a+UQUv/yqIcmioy+eBAKPY=,tag:A8OpATbbWNXQh56DNKBcpA==,type:str]
+k3s_master_ip: ENC[AES256_GCM,data:wRbeI/EcU/WMkhyqOKXO1tiMJJoK3SkRQWddK5vi,iv:/ZSHjI5ENeFRnUX3f5dnK89e1pJK8tJAwkHPOAqkOis=,tag:pEEtjL4buNn7OGc0F5piXg==,type:str]
+k3s_master_extra_args: ""
+k3s_worker_extra_args: ""
+k3s_datastore_endpoint: ENC[AES256_GCM,data:Tso0iiG17Vb3tZJMLtGw1Ra/hnRLAhBH32KfKUEVFwITnfVjyowuMYTDfAM4/5n5yUUm,iv:6MONkXIY/xhfhxUglVzdQ8H9mqxQ9wQKOd7P3ZeXUnQ=,tag:4OjdBHV1h3QIOp0vTldGhA==,type:str]
+vault_hostname: ENC[AES256_GCM,data:AF7QryFywWRLj38NNw5RR8KWDE2OS7ASIA==,iv:kULltLydzN7dKP4VJAn5QY73yUG0gW9FegqEx7Klai8=,tag:/2iJxqV6sHQ45QG1HT/DXQ==,type:str]
+vault_auth_token: ENC[AES256_GCM,data:EggN8U6BuG6/HWsfa+pK6vfc2NmJpYDm9AuKcQ==,iv:XQ+Bo+36C9V6gk54jasfP288oCRlX4m+UjP3Pg0nNsA=,tag:CDzY30l2QD40dOQl9KS/+A==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2023-10-06T08:49:16Z"
+    mac: ENC[AES256_GCM,data:zOKaOkU4ysPvmhpveRWe/+ABUpQUxZ3KVwVu2XCCUXxNunBcUFzhaRqUqQFVQCiGwypXjouE8TLIwzWZBbCLKDR+ddIkDYJhVNIfGrt9mtTJ5SxLJ2ruqfmBnee35BdWLsQhaEI6i3mXzpy6BFyj8Sn1K16iAeHK/36PuwzXhew=,iv:p3Hx+FYOGPDFni7/tObSBUkEg/+r6Be/5fvr/6RCUag=,tag:ItvkdtAbWYpi1qJZUJY9wA==,type:str]
+    pgp: []
+    unencrypted_suffix: _unencrypted
+    version: 3.7.3
