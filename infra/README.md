@@ -13,5 +13,5 @@ Terraform stack contains a sops-encrypted file, use `just decrypt`, after pullin
 1. configure `.env`
     * terraform unifi provider
 2. create a `secrets.tf`
-3. initialize using: `terraform init -backend-config="access_key=$TF_VAR_minio_access_key" -backend-config="secret_key=$TF_VAR_minio_secret_key" -backend-config="bucket=$TF_VAR_state_bucket_name" -backend-config="endpoint=$INFRA_BASE_MINIO_HOST_URL"`
+3. initialize using: `terraform init  -backend-config="endpoint=$MINIO_HOST" -backend-config="access_key=$MINIO_ACCESS_KEY" -backend-config="secret_key=$MINIO_SECRET_KEY"`
 4. `terraform apply`
