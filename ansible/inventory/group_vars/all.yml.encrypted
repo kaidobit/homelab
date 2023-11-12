@@ -1,19 +1,24 @@
-k3s_version: ENC[AES256_GCM,data:QCOeIdv2jO6h8GsF,iv:QKGrXSD+Zshn0HYsD2IsHrB/d5zo04vyihylIwmvfgs=,tag:bOAoprcIeUgcBt1W00W88A==,type:str]
-systemd_dir: ENC[AES256_GCM,data:hIDzNh1Y3uXEqrRASnLarkbLbg==,iv:wfvpH/shdjTxn5dUoFPv4a+UQUv/yqIcmioy+eBAKPY=,tag:A8OpATbbWNXQh56DNKBcpA==,type:str]
-k3s_master_ip: ENC[AES256_GCM,data:wRbeI/EcU/WMkhyqOKXO1tiMJJoK3SkRQWddK5vi,iv:/ZSHjI5ENeFRnUX3f5dnK89e1pJK8tJAwkHPOAqkOis=,tag:pEEtjL4buNn7OGc0F5piXg==,type:str]
+k3s_version: ENC[AES256_GCM,data:BJNf2z/ifFWibvRT,iv:EIgXgwm74oR01hr4r3AmPCH+OBsDgnZCiCEllXRGt68=,tag:4fYgoo0ij2R2Q1pv1oW1wA==,type:str]
+systemd_dir: ENC[AES256_GCM,data:DEpplvITb8U0ssk3jtPu/Yb5sQ==,iv:aul6CqLQSrDOREXZfzapVI6MEXLjLkWjTZSZj4tSPLE=,tag:c/0lmPhrLrGlURODAA+HuQ==,type:str]
+k3s_master_ip: ENC[AES256_GCM,data:hIop04QQfwggIfwS7f9vgFxKPq12rKxdxfcVL3AE,iv:RQiL7ZKwuVSqeVGUR7S/CCUD67rtb31/4TdjnuMa+uc=,tag:cWYU8g2E0QM3ztXcCEGkqg==,type:str]
 k3s_master_extra_args: ""
 k3s_worker_extra_args: ""
-k3s_datastore_endpoint: ENC[AES256_GCM,data:Tso0iiG17Vb3tZJMLtGw1Ra/hnRLAhBH32KfKUEVFwITnfVjyowuMYTDfAM4/5n5yUUm,iv:6MONkXIY/xhfhxUglVzdQ8H9mqxQ9wQKOd7P3ZeXUnQ=,tag:4OjdBHV1h3QIOp0vTldGhA==,type:str]
-vault_hostname: ENC[AES256_GCM,data:AF7QryFywWRLj38NNw5RR8KWDE2OS7ASIA==,iv:kULltLydzN7dKP4VJAn5QY73yUG0gW9FegqEx7Klai8=,tag:/2iJxqV6sHQ45QG1HT/DXQ==,type:str]
-vault_auth_token: ENC[AES256_GCM,data:EggN8U6BuG6/HWsfa+pK6vfc2NmJpYDm9AuKcQ==,iv:XQ+Bo+36C9V6gk54jasfP288oCRlX4m+UjP3Pg0nNsA=,tag:CDzY30l2QD40dOQl9KS/+A==,type:str]
+k3s_datastore_endpoint: ENC[AES256_GCM,data:WqJTvwoyeoqTxtqv4mkk0+VOEeCH/0Pz2y6lrq/vLksYstYpvz9uujPAsJjk/8zCePhZ,iv:oCZpLb71XbFhsKMPoHVh9OH5G8UNec4zZFjY900az0w=,tag:3tXKvAUiLv4Blmodp0+pUQ==,type:str]
+vault_hostname: ENC[AES256_GCM,data:eWOj76aVxtcc39SBsN3Juc0mppnCvlXTnw==,iv:7xTH15ytJv/ThlWh3PF6vsx+Lu4PN0HKCtPwwSOBlZI=,tag:hhBQrURbATXLuiyI1frotQ==,type:str]
+vault_auth_token: ENC[AES256_GCM,data:cuUBnitalmiPULTGxiygDD6XajuGqsjqNn/Rbg==,iv:+dQfwTFE7h1RxQGfwGShYSCnoeskcr2BUllRdYk3NIw=,tag:+cE8zsMkpAp2dYPfHdwulQ==,type:str]
 sops:
     kms: []
     gcp_kms: []
     azure_kv: []
-    hc_vault: []
+    hc_vault:
+        - vault_address: http://192.168.10.3:8200
+          engine_path: sops
+          key_name: homelab
+          created_at: "2023-11-12T17:28:13Z"
+          enc: vault:v1:N2kdpWOqZZVcQ/BZH4Mdv5SAW/pYZOvrMlLQzggFO146K6pkDL0/ut0d+TVqUua3yIjwGV4wpqs1LAjO
     age: []
-    lastmodified: "2023-10-06T08:49:16Z"
-    mac: ENC[AES256_GCM,data:zOKaOkU4ysPvmhpveRWe/+ABUpQUxZ3KVwVu2XCCUXxNunBcUFzhaRqUqQFVQCiGwypXjouE8TLIwzWZBbCLKDR+ddIkDYJhVNIfGrt9mtTJ5SxLJ2ruqfmBnee35BdWLsQhaEI6i3mXzpy6BFyj8Sn1K16iAeHK/36PuwzXhew=,iv:p3Hx+FYOGPDFni7/tObSBUkEg/+r6Be/5fvr/6RCUag=,tag:ItvkdtAbWYpi1qJZUJY9wA==,type:str]
+    lastmodified: "2023-11-12T17:28:13Z"
+    mac: ENC[AES256_GCM,data:AwJ8Xqits05GBEnenPGWsL12eLTEV2d8lbixifi0xUfqCQo9vjT2i1FYUGefExWdxvGlMFBUHFKpgnl3HYgSBKdRrlMEEQSbPH1Ht0LESpw+m8s8YrS5Rxe+s/aGclmDziOjjvFUabSGALs6ED3xheEhnFvu1M5ICG3I/33I4qA=,iv:dkJiOxCTI+I4Fkh1dvP9Lv4AYSaLvpYlmlisCLwQuxw=,tag:kWP5S7PqiPEd1qiDpJ7o5A==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
     version: 3.7.3

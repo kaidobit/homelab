@@ -1,7 +1,12 @@
 creation_rules:
+  - path_regex: .*
+    hc_vault_transit_uri: "http://192.168.10.3:8200/v1/sops/keys/homelab"
 
-  - path_regex: ansible/inventory/hosts.ini
-    hc_vault_uris: "$VAULT_ADDR/v1/sops/keys/homelab"
 
-  - path_regex: ansible/inventory/group_vars/*
-    hc_vault_uris: "$VAULT_ADDR/v1/sops/keys/homelab"
+#  - path_regex: ansible/inventory/hosts.ini
+#    hc_vault_uris: "$VAULT_ADDR/v1/sops/keys/homelab"
+#
+#  - path_regex: ansible/inventory/group_vars/*
+#    hc_vault_uris: "$VAULT_ADDR/v1/sops/keys/homelab"
+
+
