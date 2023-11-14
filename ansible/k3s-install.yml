@@ -5,6 +5,7 @@
   roles:
     - role: common/update-system
     - role: common/ansible-requirements
+    - role: k3s/vlans
 
 - hosts: main_master
   become: yes

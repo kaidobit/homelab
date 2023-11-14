@@ -1,0 +1,19 @@
+---
+- name: Install vlan package
+  ansible.builtin.package:
+    name: vlan
+    state: present
+
+- name: Copy vlan interfaces config file
+  register: k3s_service
+  template:
+    src: "vlans.cfg.j2"
+    dest: "/etc/network/interfaces.d/vlans.cfg"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Restart networking service
+  ansible.builtin.service:
+    name: networking
+    state: restarted
