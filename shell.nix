@@ -14,6 +14,7 @@ in
             pkgs.minio-client
             pkgs.sops
             pkgs.age
+            pkgs.argocd
         ];
 
         shellHook =
