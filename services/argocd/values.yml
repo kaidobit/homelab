@@ -108,8 +108,8 @@ repoServer:
       command: [ sh, -c ]
       args:
         - >-
-          wget -O argocd-vault-plugin https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v$(AVP_VERSION)/argocd-vault-plugin_$(AVP_VERSION)_linux_amd64 &&
-          wget -O yq https://github.com/mikefarah/yq/releases/download/v4.35.1/yq_linux_amd64 &&
+          wget -O argocd-vault-plugin https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v$(AVP_VERSION)/argocd-vault-plugin_$(AVP_VERSION)_linux_arm64 &&
+          wget -O yq https://github.com/mikefarah/yq/releases/download/v4.35.1/yq_linux_arm64 &&
           chmod +x argocd-vault-plugin yq &&
           mv argocd-vault-plugin yq /custom-tools/
       resources:
@@ -153,14 +153,14 @@ configs:
               - sh
               - "-c"
               - |
-                find . -name '*.ya?ml*' ! -name "values*.ya?ml*" ! -iname "kustomization.ya?ml*"
+                find . \( -name '*.yaml*' -o -name '*.yml*' \) ! -name "*\.dist" ! -name "values*"
         generate:
           command:
             - sh
             - "-c"
             - |
               IMAGE_TAG=${ARGOCD_ENV_IMAGE_TAG-${ARGOCD_APP_REVISION-'main-latest'}}
-              yq $(find . -name "*.ya?ml*" ! -name "values*.ya?ml*" ! -iname "kustomization.ya?ml*" | sort) | argocd-vault-plugin generate - | sed -e 's/replaced-by-argocd/'${IMAGE_TAG}'/g'
+              yq $(find . \( -name '*.yaml*' -o -name '*.yml*' \) ! -name "*\.dist" ! -name "values*" | sort) | argocd-vault-plugin generate - | sed -e 's/replaced-by-argocd/'${IMAGE_TAG}'/g'
         lockRepo: false
 
       argocd-vault-plugin-helm:
