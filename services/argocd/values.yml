@@ -1,0 +1,187 @@
+repoServer:
+  name: repo-server
+
+  ## Repo server image
+#  image:
+    # -- Tag to use for the repo server
+    # @default -- `""` (defaults to global.image.tag)
+#    tag: ""
+
+  # -- Secrets with credentials to pull images from a private registry
+  # @default -- `[]` (defaults to global.imagePullSecrets)
+#  imagePullSecrets: []
+
+  # -- envFrom to pass to repo server
+  # @default -- `[]` (See [values.yaml])
+  envFrom:
+   - configMapRef:
+       name: argocd-vault-plugin-configmap
+   - secretRef:
+       name: argocd-vault-plugin-secret
+
+  # -- Additional containers to be added to the repo server pod
+  ## Ref: https://argo-cd.readthedocs.io/en/stable/user-guide/config-management-plugins/
+  ## Note: Supports use of custom Helm templates
+  extraContainers:
+    - name: argocd-vault-plugin
+      command: [ '/var/run/argocd/argocd-cmp-server' ]
+      image: quay.io/argoproj/argocd:v2.7.10
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+      envFrom:
+        - configMapRef:
+            name: argocd-vault-plugin-configmap
+        - secretRef:
+            name: argocd-vault-plugin-secret
+      resources:
+        limits:
+          cpu: 1000m
+          memory: 512Mi
+        requests:
+          cpu: 125m
+          memory: 128Mi
+      volumeMounts:
+        - name: var-files
+          mountPath: /var/run/argocd
+        - name: plugins
+          mountPath: /home/argocd/cmp-server/plugins
+        - name: tmp
+          mountPath: /tmp
+
+        # Register plugins into sidecar
+        - name: argocd-cmp-cm
+          mountPath: /home/argocd/cmp-server/config/plugin.yaml
+          subPath: argocd-vault-plugin.yaml
+
+        # Important: Mount tools into $PATH
+        - name: custom-tools
+          mountPath: /usr/local/bin/argocd-vault-plugin
+          subPath: argocd-vault-plugin
+        - name: custom-tools
+          mountPath: /usr/local/bin/yq
+          subPath: yq
+
+#        - name: argocd-vault-plugin-helm
+#          command: [ '/var/run/argocd/argocd-cmp-server' ]
+#          image: quay.io/argoproj/argocd:v2.7.10
+#          securityContext:
+#            runAsNonRoot: true
+#            runAsUser: 999
+#          envFrom:
+#            - configMapRef:
+#                name: argocd-vault-plugin-configmap
+#            - secretRef:
+#                name: argocd-vault-plugin-secrets
+#          resources:
+#            limits:
+#              cpu: 1000m
+#              memory: 512Mi
+#            requests:
+#              cpu: 125m
+#              memory: 128Mi
+#          volumeMounts:
+#            - name: var-files
+#              mountPath: /var/run/argocd
+#            - name: plugins
+#              mountPath: /home/argocd/cmp-server/plugins
+#            - name: tmp
+#              mountPath: /tmp
+#
+#            # Register plugins into sidecar
+#            - name: argocd-cmp-cm
+#              subPath: argocd-vault-plugin-helm.yaml
+#              mountPath: /home/argocd/cmp-server/config/plugin.yaml
+#
+#            # Important: Mount tools into $PATH
+#            - name: custom-tools
+#              subPath: argocd-vault-plugin
+#              mountPath: /usr/local/bin/argocd-vault-plugin
+
+  # -- Init containers to add to the repo server pods
+  initContainers:
+    - name: download-tools
+      image: alpine:latest
+      env:
+        - name: AVP_VERSION
+          value: "1.16.0"
+      command: [ sh, -c ]
+      args:
+        - >-
+          wget -O argocd-vault-plugin https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v$(AVP_VERSION)/argocd-vault-plugin_$(AVP_VERSION)_linux_amd64 &&
+          wget -O yq https://github.com/mikefarah/yq/releases/download/v4.35.1/yq_linux_amd64 &&
+          chmod +x argocd-vault-plugin yq &&
+          mv argocd-vault-plugin yq /custom-tools/
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 125m
+          memory: 128Mi
+      volumeMounts:
+        - mountPath: /custom-tools
+          name: custom-tools
+
+  # -- Additional volumes to the repo server pod
+  volumes:
+    - name: argocd-cmp-cm
+      configMap:
+        name: argocd-cmp-cm
+    - name: custom-tools
+      emptyDir: {}
+
+  # -- Resource limits and requests for the repo server pods
+  resources: {}
+  #  limits:
+  #    cpu: 50m
+  #    memory: 128Mi
+  #  requests:
+  #    cpu: 10m
+  #    memory: 64Mi
+
+configs:
+  cmp:
+    create: true
+    plugins:
+      argocd-vault-plugin:
+        allowConcurrency: true
+
+        discover:
+          find:
+            command:
+              - sh
+              - "-c"
+              - |
+                find . -name '*.ya?ml*' ! -name "values*.ya?ml*" ! -iname "kustomization.ya?ml*"
+        generate:
+          command:
+            - sh
+            - "-c"
+            - |
+              IMAGE_TAG=${ARGOCD_ENV_IMAGE_TAG-${ARGOCD_APP_REVISION-'main-latest'}}
+              yq $(find . -name "*.ya?ml*" ! -name "values*.ya?ml*" ! -iname "kustomization.ya?ml*" | sort) | argocd-vault-plugin generate - | sed -e 's/replaced-by-argocd/'${IMAGE_TAG}'/g'
+        lockRepo: false
+
+      argocd-vault-plugin-helm:
+        allowConcurrency: true
+
+        # Note: this command is run _before_ any Helm templating is done, therefore the logic is to check
+        # if this looks like a Helm chart
+        discover:
+          find:
+            command:
+              - sh
+              - "-c"
+              - "find . -name 'Chart.ya?ml' && find . -name 'values*.ya?ml*'"
+        generate:
+          # **IMPORTANT**: passing `${ARGOCD_ENV_HELM_ARGS}` effectively allows users to run arbitrary code in the Argo CD
+          # repo-server (or, if using a sidecar, in the plugin sidecar). Only use this when the users are completely trusted. If
+          # possible, determine which Helm arguments are needed by your users and explicitly pass only those arguments.
+          command:
+            - sh
+            - "-c"
+            - |
+              helm template $ARGOCD_APP_NAME --include-crds -n $ARGOCD_APP_NAMESPACE ${ARGOCD_ENV_HELM_ARGS} . |
+              argocd-vault-plugin generate -
+        lockRepo: false
