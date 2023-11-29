@@ -1,0 +1,24 @@
+apiVersion: ENC[AES256_GCM,data:a0LAmrmYFLNUd10b+zg15HEC,iv:kl77ZiQI/+0U3iqm306mKMZ/IV5K4dOjLrBzP6x/wdo=,tag:InXwQyPKterUDAGVnn9+WQ==,type:str]
+kind: ENC[AES256_GCM,data:CDG2aLiwQc+LakUUNw==,iv:rpewTcQEAPHddienXiVG0acIVWq3izJCA5H2iMyj/no=,tag:7mXlraKM1KW6ra/IVnBlcw==,type:str]
+metadata:
+    name: ENC[AES256_GCM,data:WCNo,iv:T0awQBPI0njpR9CpbZy7atB22UeQvmSoldvR7WmYtLI=,tag:hboSutSxt2XTxpcymnyYjQ==,type:str]
+    namespace: ENC[AES256_GCM,data:oWUZKTYkDb5aeazwoCU=,iv:PI8xE8uiQ5izVKWcdzyYafkEZMIlNlISThJTOAU8mqU=,tag:f5eF/K+RjTbHczeUf/w30Q==,type:str]
+spec:
+    addresses:
+        - ENC[AES256_GCM,data:BdZbF4iUJ7Lhi2D+U0+hgCuKpMuvrEqq,iv:xym2dzrYyFcilRsiCtJlYsB7GUCO/ZeBCc/otq8pa6M=,tag:gkM2Q971gwwCd2Li5piDrQ==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault:
+        - vault_address: http://192.168.10.3:8200
+          engine_path: sops
+          key_name: homelab
+          created_at: "2023-11-29T12:08:26Z"
+          enc: vault:v1:uaYANCyaNvD6cMSPKKagqy8MPYttU2kNAJbYyk2lTWOHs+8986RwgHTHV7yCAdW43rSH3UWuDSn7dFIv
+    age: []
+    lastmodified: "2023-11-29T12:08:26Z"
+    mac: ENC[AES256_GCM,data:+/utUQISf3CtNED1HCz/AZ+7Mw26JOrlZ8f52tq8GEyNjA03Qx8iEVXv8QlVy5dm4tHVeUqHSJrhX0hLD7NKmxWBRq38cXowhpI/5qel/zlitACn75rfWdjJ4dPR6sKti+4RfSreojAPAY/v13aGl3fqqTDilLluiaAJobpx3qs=,iv:RnOulq36dTIdF6FScQRqhU9PqdCm5uFb7FJsSi8bXGs=,tag:aw8QmFa794o7WQqepAddQQ==,type:str]
+    pgp: []
+    unencrypted_suffix: _unencrypted
+    version: 3.7.3
