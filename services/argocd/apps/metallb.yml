@@ -15,7 +15,7 @@ spec:
 #          - $repo/services/metallb/values.yml
     - repoURL: ssh://git@github.com/kaidobit/homelab
       plugin:
-        name: argocd-vault-plugin
+        name: sops-plugin
       targetRevision: main
       path: services/metallb
 #      ref: repo
