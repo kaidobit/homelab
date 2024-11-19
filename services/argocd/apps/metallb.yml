@@ -11,13 +11,11 @@ spec:
       targetRevision: 0.13.12
       helm:
         releaseName: metallb
-#        valueFiles:
-#          - $repo/services/metallb/values.yml
     - repoURL: ssh://git@github.com/kaidobit/homelab
       plugin:
         name: sops-plugin
       targetRevision: main
-      path: services/metallb
+      path: services/metallb/resources
 #      ref: repo
   destination:
     name: in-cluster
